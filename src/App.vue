@@ -7,7 +7,10 @@
         <div  v-if="showAddRow">
             <AddRow @add-row="addRow"/>
         </div>
-        <Table @delete-entry="deleteEntry" :entries="entries"/>
+        <Table @delete-entry="deleteEntry" @edit-entry="editEntry" :entries="entries"/>
+
+
+
       </div>
       
     
@@ -21,20 +24,18 @@
 import Header from "./components/Header.vue"
 import AddRow from "./components/AddRow.vue"
 import Table from "./components/Table.vue"
-import Button from "./components/Button.vue"
-import DropList from "./components/DropList.vue"
-import Image from "./components/Image.vue"
 
 export default {
   name: 'App',
 
   components: {
 Table,
-DropList,
-Button,
-Image,
+
+
+
 AddRow,
 Header,
+
   },
 
   data: () => ({
@@ -55,8 +56,25 @@ Header,
     if(confirm('Are you sure?')){
       this.entries=this.entries.filter((entry)=>entry.id !==id)
     }
+       },
+       editEntry(sImage,sItem,id){
+       
+        if(sImage){
+            this.entries =this.entries.map((entry)=>
+            entry.id==id?{...entry,image:sImage}:entry
+            )
+        }
+        if(sItem){
+          this.entries =this.entries.map((entry)=>
+            entry.id==id?{...entry,select:sItem}:entry
+            )
+        }
+      
 
-   }
+    }
+
+
+
   
 
 }, created(){

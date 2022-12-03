@@ -6,18 +6,25 @@
           <td > 
               <h3>{{entry.select}}</h3>
           </td>
-          <td> <ButtonTwo @delete-entry = "onDelete" color="red" text="delete" btnId="1" /> <ButtonTwo color="blue" text="edit" btnId="2"  /> </td>
+          <td> 
+            <ButtonTwo @delete-entry = "onDelete" color="red" text="delete" btnId="1" /> 
+            <Dialog @saving="saveIng" />
+            </td>
+            
 
         
 </template>
 <script>
 import ButtonTwo from './ButtonTwo.vue';
+import Dialog from './Dialog.vue';
 import DropList from './DropList.vue';
+
 
 
 export default{
     data() {
         return {
+            isEditing:false
             
         };
     },
@@ -28,6 +35,7 @@ export default{
     components:{
     ButtonTwo,
     DropList,
+    Dialog
 
 }
     ,
@@ -35,9 +43,15 @@ export default{
         onDelete(){
         
             this.$emit('delete-entry',this.entry.id)
+        },
+        saveIng(sImage,sItem){
+            console.log('entry has the valuse now ----->',sImage,sItem,this.entry.id)
+            this.$emit('edit-entry',sImage,sItem,this.entry.id)
+            
+            
         }
     },
-    emits:['delete-entry']
+    emits:['delete-entry','edit-entry','selctedImage']
 }
 </script>
 <style>

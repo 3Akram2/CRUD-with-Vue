@@ -34,7 +34,7 @@ export default{
 
             }
             else if(btnId==="2"){
-                console.log("edit is clicked!")
+                this.$emit('edit-entry')
             }
         }
     }

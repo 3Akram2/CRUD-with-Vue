@@ -1,7 +1,7 @@
 <template >
 
 <tr :key="entry.id" v-for="entry in entries" class="entry">
- <Entry @delete-entry="onDelete" :entry="entry"/>
+ <Entry @delete-entry="onDelete" @edit-entry="editEntry" :entry="entry"/>
 </tr>
 
 </template>
@@ -27,10 +27,13 @@ export default{
         onDelete(id){
             this.$emit("delete-entry",id)
 
+        },
+        editEntry(sImage,sItem,id){
+            this.$emit('edit-entry',sImage,sItem,id)
         }
     }
     ,
-    emits:['delete-entry']
+    emits:['delete-entry','edit-entry']
 
 }
     

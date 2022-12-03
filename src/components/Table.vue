@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody >
-        <Entries @delete-entry="onDelete" :entries="entries" />
+        <Entries @delete-entry="onDelete" @edit-entry="editEntry" :entries="entries" />
       </tbody>
     </v-table>
   </template>
@@ -41,6 +41,10 @@ props:{
     methods:{
       onDelete(id){
         this.$emit("delete-entry",id)
+
+      },
+      editEntry(sImage,sItem,id){
+        this.$emit('edit-entry',sImage,sItem,id)
 
       }
     }
