@@ -12,7 +12,7 @@
 </template>
 <script>
 export default{
-
+    name:'ButtonTwo',
     data(){
         return{ id:''
         };

@@ -30,9 +30,6 @@ export default {
 
   components: {
 Table,
-
-
-
 AddRow,
 Header,
 
@@ -44,31 +41,59 @@ Header,
   }),
 
   methods:{
+   async fetchEntries(){
+      const res = await fetch('api/entries')
+      const data=await res.json()
+      return data
+    },
+    async fetchEntry(id){
+      const res = await fetch(`api/entries/${id}`)
+      const data = await res.json()
+      return data
+
+    },
     toggleAddRow(){
      this.showAddRow=!this.showAddRow;
      
     }, 
-   addRow(entry){
+   async addRow(entry){
+    const res=await fetch('api/entries',{
+      method:'POST',
+      headers:{
+        'content-type':'application/json'
+      },
+      body:JSON.stringify(entry)
+    })
    this.entries=[...this.entries,entry]
 
    },
-   deleteEntry(id){
+   async deleteEntry(id){
     if(confirm('Are you sure?')){
-      this.entries=this.entries.filter((entry)=>entry.id !==id)
+      const res=await fetch(`api/entries/${id}`,{
+        method:'DELETE'
+      })
+
+      res.status===200?this.entries=this.entries.filter((entry)=>entry.id !==id):alert('Error deleting this entry')
     }
        },
-       editEntry(sImage,sItem,id){
-       
-        if(sImage){
-            this.entries =this.entries.map((entry)=>
-            entry.id==id?{...entry,image:sImage}:entry
-            )
-        }
-        if(sItem){
-          this.entries =this.entries.map((entry)=>
-            entry.id==id?{...entry,select:sItem}:entry
-            )
-        }
+     async  editEntry(sImage,sItem,id){
+      const entryToEdit=await this.fetchEntry(id)
+      const updEntry={...entryToEdit,image:sImage,select:sItem}
+
+        
+
+      const res = await fetch(`api/entries/${id}`, {
+        method:'PUT',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(updEntry)
+      })
+      const data =  await res.json()
+      this.entries = this.entries.map((entry)=>
+      entry.id===id?{...entry,image:data.image,select:data.select}:entry
+      )
+
       
 
     }
@@ -77,26 +102,10 @@ Header,
 
   
 
-}, created(){
+}, 
+async created(){
 
-this.entries= [
-    {
-        "id":"1",
-        "image": "https://www.global-adventures.us/wp-content/uploads/2021/10/shutterstockRF_520475221.jpg",
-        "select":"Florida"
-    },
-    {
-        "id":"2",
-        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-KJ9Rk2YJHFDDJUZwey03lIhI7-V0d4srtrpbW7SJ&s",
-        "select":"Georgia"
-    },
-    {
-        "id":"3",
-        "image": "https://static3.depositphotos.com/1007581/227/i/600/depositphotos_2272322-stock-photo-soybean-field.jpg",
-        "select":"Nebraska"
-    }
-
-    ]
+this.entries= await this.fetchEntries()
 
 }
 }
@@ -113,3 +122,16 @@ this.entries= [
 }
 
 </style>
+
+
+
+
+<!-- if(sImage){
+  this.entries =this.entries.map((entry)=>
+  entry.id==id?{...entry,image:sImage}:entry
+  )
+}
+if(sItem){
+this.entries =this.entries.map((entry)=>
+  entry.id==id?{...entry,select:sItem}:entry
+  ) -->

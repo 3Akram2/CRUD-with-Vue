@@ -28,6 +28,7 @@ import Entries from "./Entries.vue";
 
   
   export default {
+    name:'Table',
    
 props:{
         entries:Array,

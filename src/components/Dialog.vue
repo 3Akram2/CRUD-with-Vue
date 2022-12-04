@@ -31,6 +31,7 @@ import Image from './Image.vue';
 import ButtonTwo from './ButtonTwo.vue';
 
   export default {
+    name:'Dialog',
     data() {
         return {
             dialog: false,

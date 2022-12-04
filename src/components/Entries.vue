@@ -8,9 +8,11 @@
 <script>
 
 
+import App from '@/App.vue';
 import Entry from './Entry.vue';
 
 export default{
+    name:'Entries',
     data() {
         return {
             
